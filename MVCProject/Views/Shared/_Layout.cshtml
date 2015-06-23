@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/js")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.subMenu').smint({
+                'scrollSpeed': 1000
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#gallery').gallerie();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <nav class="subMenu navbar-custom navbar-scroll-top smint" role="navigation">
+            <div class="container">
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="navbar-collapse navbar-left navbar-main-collapse collapse" style="height: 1px;">
+                    <ul class="nav navbar-nav">
+                        <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                        <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">
+                            @Html.ActionLink("Home", "Index", "Home", new object { }, new { @class = "subNavBtn active", @id = "sTop" })
+                        </li>                        
+                        <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">
+                            @Html.ActionLink("About", "About", "Home", new object { }, new { @class = "subNavBtn", @id = "s4" })
+                        </li>
+                        <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">
+                            @Html.ActionLink("Contact", "Contact", "Home", new object { }, new { @class = "subNavBtn", @id = "s5" })
+                        </li>
+                        <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">
+                            @Html.ActionLink("Posts", "Index", "Post", new object { }, new { @class = "subNavBtn", @id = "s6" })
+                        </li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+                <!-- /.navbar-collapse -->
+                <a id="s4" class="right-msg subNavBtn msg-icon" href="/"><span> </span></a>
+                <div class="clearfix"> </div>
+            </div>
+            <!-- /.container -->
+        </nav>
+
+    </div>
+    @if (IsSectionDefined("MainContent"))
+    {
+        @RenderSection("MainContent")
+    }
+    else
+    {
+        <div class="main-content">
+        </div>
+    }
+    <div class="footer">
+        <div class="container">
+            <div class="copy">
+                <p>&copy; 2015 BSU - MMF - Sergey Pogorelov</p>
+            </div>
+            <div class="social">
+                <ul>
+                    <li class="facebook"><a href="#"><span> </span></a></li>
+                    <li class="twitter"><a href="#"><span> </span></a></li>
+                    <li class="rss"><a href="#"><span> </span></a></li>
+                    <li class="google"><a href="#"><span> </span></a></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+</body>
+</html>
