@@ -1,18 +1,15 @@
 ﻿@model IEnumerable<MVCProject.Models.Post>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Posts List";
 }
 
 @section MainContent{
     <div class="main-content">
-        <h2>Index</h2>
+        <h2 style="color: gray; padding-left: 10px;">All posts</h2>
 
-        <p>
-            @Html.ActionLink("Create New", "Create")
-        </p>
-@if (ViewContext.HttpContext.User.IsInRole("admin"))
-{<table class="table">
+        @if (ViewContext.HttpContext.User.IsInRole("admin"))
+        {<table class="table">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Title)
@@ -66,32 +63,40 @@
             }
 
         </table>
-}
+        }
 
-@if (ViewContext.HttpContext.User.IsInRole("user"))
-{
-    <div class="main-content">
-        <div id="gallery">
-            
-            @foreach (var item in Model)
-            {
-                
+        @if (ViewContext.HttpContext.User.IsInRole("user"))
+        {
+            <div class="menu">
+                <ul class="nav navbar-nav">
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("New", "Create", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                </ul>
+            </div>
+            <div class="main-content">
 
-                if (item.File != null)
-                {
-                    <a href="~/Uploads/@item.File"><img class="post-image" src="~/Uploads/@item.File" /></a>
-                }
-                else
-                {
-                    <img src="../../Content/pictures/filen.png" alt="без файла изображения" class="tdImage" />
-                }
+                <div id="gallery">
 
-                //@Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                    @foreach (var item in Model)
+                    {
+                        <div style="display:inline-block; width:320px; height:320px; margin-right: 10px;">
 
-            }
-        </div>
-    </div>
-}
+                            @if (item.File != null)
+                            {
+                                <a href="~/Uploads/@item.File"><img class="post-image" src="~/Uploads/@item.File" /></a>
+                            }
+                            else
+                            {
+                                <img src="../../Content/pictures/filen.png" alt="без файла изображения" class="tdImage" />
+                            }
+
+                            <div><p style="color: #ffb500; font-size:14px">@Html.DisplayFor(modelItem => item.Title)</p></div>
+                            <div><p style="color: #ffb500; font-size:14px">@Html.DisplayFor(modelItem => item.Description)</p></div>
+                            @Html.ActionLink("Delete", "Delete", new { id = item.PostId }, new { @class = "actionLink" })
+                        </div>
+                    }
+                </div>
+            </div>
+        }
 
     </div>
 }
