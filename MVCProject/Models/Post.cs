@@ -51,8 +51,13 @@ namespace MVCProject.Models
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
 
-        public List<Tag> Tags
-        { get; set; }
+        public List<Tag> AvailableTags { get; set; }
+
+        public List<Tag> Tags { get; set; }
+
+        public int? SelectedTagId { get; set; }
+
+        public int? SelectedDelTagId { get; set; }
 
         [Display(Name = "Picture file")]
         public string File { get; set; }

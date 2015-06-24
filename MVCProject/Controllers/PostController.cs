@@ -18,7 +18,8 @@ namespace MVCProject.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            List<Post> postsList = db.Posts.Include(p => p.Author).Include(p=>p.Tags).ToList();
+            var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
+            List<Post> postsList = db.Posts.Where(r => r.Author.Id == currentUser.Id).Include(p => p.Author).Include(p => p.Tags).ToList();
 
             return View(postsList);
         }
@@ -50,7 +51,7 @@ namespace MVCProject.Controllers
             var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
             if (currentUser != null)
             {
-                ViewBag.Tags = new SelectList(db.Tags, "Id", "Name");
+                ViewBag.AvailableTags = new SelectList(db.Tags, "Id", "Name");
                 return View();
             }
             return RedirectToAction("LogOff", "Account");
@@ -72,7 +73,8 @@ namespace MVCProject.Controllers
                 post.Description = CreatePost.Description;
                 post.Status = (int)PostStatus.Sent;
                 post.Author = currentUser;
-                
+                CreatePost.AvailableTags = db.Tags.ToList<Tag>();
+                post.Tags = CreatePost.AvailableTags;
                 DateTime current = DateTime.Now;
 
                 if (picture != null)

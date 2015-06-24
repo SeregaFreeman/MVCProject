@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "User edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainContent{
+    <div class="main-content">
+        <div class="contact-form">
+            @if (ViewContext.HttpContext.User.IsInRole("admin"))
+            {
+                using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true)
+
+                    <fieldset>
+                        <h3>User</h3>
+                        <ul style="padding-left: 0;">
+
+                            <li class="register">
+                            </li>
+                            <li class="register">
+                            </li>
+                            <li class="register">
+                            </li>
+                            <li class="register">
+                                <input type="submit" value="Save" />
+                            </li>
+                        </ul>
+                    </fieldset>
+                }
+            }
+        </div>
+    </div>
+}

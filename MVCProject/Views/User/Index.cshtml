@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Users list";
+}
+@section MainContent{
+    <div class="main-content">
+        <!-- В зависимости от роли пользователя устанавливаем определенное меню -->
+        @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+        {
+            <h2 style="color: gray; padding-left: 10px;">Admin menu: you entered as admin</h2>
+            <div class="menu">
+                <ul class="nav navbar-nav">
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("My posts", "Index", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("New", "Create", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("Log Out", "LogOff", "Account", new object { }, new { @style = "color: #ffb500" })</li>
+                </ul>
+            </div>
+
+            <div>
+                <h2 style="color: gray; padding-left: 0;">Users list</h2>
+                <table class="table table-condensed" style="color: #ffffff !important">
+                    <thead style="color: rgb(255, 106, 0)">
+                        <tr>
+                            <th>
+                               
+                            </th>
+                            <th style="display: none;">
+                               </th>
+
+                            <th>
+                                </th>
+                            <th>
+                                <p>Edit</p>
+                            </th>
+                            <th>
+                                <p>Delete</p>
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td style="display: none;">
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @style = "color: #ffb500" })
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @style = "color: #ffb500" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+            </div>
+        }
+
+        else if (ViewContext.HttpContext.User.IsInRole("Moderator"))
+        {
+            <h2 style="color: gray; padding-left: 10px;">Moderator menu</h2>
+            <div class="menu">
+                <ul class="nav navbar-nav">
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("My posts", "Index", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("Check", "Approve", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("New", "Create", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("Log Out", "LogOff", "Account", new object { }, new { @style = "color: #ffb500" })</li>
+                </ul>
+            </div>
+        }
+
+        else if (ViewContext.HttpContext.User.IsInRole("User"))
+        {
+            <h2 style="color: gray; padding-left: 10px;">Welcome, @ViewContext.HttpContext.User.Identity.Name</h2>
+            <div class="menu">
+                <ul class="nav navbar-nav">
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("New post", "Create", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("My posts", "Index", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                    <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("Log Out", "LogOff", "Account", new object { }, new { @style = "color: #ffb500" })</li>
+                </ul>
+            </div>
+        }
+    </div>
+}
