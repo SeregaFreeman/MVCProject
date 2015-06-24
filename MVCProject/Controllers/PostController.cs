@@ -146,6 +146,38 @@ namespace MVCProject.Controllers
             return View(EditPost);
         }
 
+        // действия для модератора
+        [HttpGet]
+        [Authorize(Roles = "moderator")]
+        public ActionResult Approve()
+        {
+            var posts = db.Posts.Include(r => r.Author).Where(r => r.Status != (int)PostStatus.Approved);
+
+            return View(posts);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "moderator")]
+        public ActionResult Approve(int? postId)
+        {
+            if (postId == null)
+            {
+                return RedirectToAction("Approve");
+            }
+
+            Post post = db.Posts.Find(postId);
+            if (post == null)
+            {
+                return RedirectToAction("Approve");
+            }
+
+            post.Status = (int)PostStatus.Approved;
+            
+            db.Entry(post).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Approve");
+        }
         // GET: Post/Delete/5
         public ActionResult Delete(int? id)
         {

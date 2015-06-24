@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Post>
+@using MVCProject.Models;
+@{
+    
+    ViewBag.Title = "Posts list";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainContent{
+    <div class="main-content">
+        <h2 style="color: #ffb500">Posts list</h2>
+        
+        @foreach (var item in Model)
+        {
+            if (item.Status == (int)PostStatus.Sent)
+            {
+            
+            <div>
+                <h3>@Html.DisplayFor(modelItem => item.Author)</h3>
+                <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+            </div>
+
+            if (item.File != null)
+            {
+                <a href="/Uploads/@item.File"><img class="post-image" src="/Uploads/@item.File" /></a>
+            }
+            else
+            {
+                <h3>No image file</h3>
+            }
+
+            using (Html.BeginForm())
+            {
+
+                @Html.Hidden("postId", item.PostId)
+                if (item.Status == (int)PostStatus.Sent)
+                {
+                    @Html.DropDownList("status", new[]
+                    {
+                        new SelectListItem() {Text = "Sent", Value = "1" },
+                        new SelectListItem() { Text = "Approved", Value = "2" }})
+                }
+
+                <input type="submit" value="Change status" />
+            }
+        }}
+    </div>
+}

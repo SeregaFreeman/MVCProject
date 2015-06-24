@@ -79,3 +79,5 @@ E:\OneDrive\Programming\C#\MVCProject\MVCProject\bin\System.Web.Entity.dll
 E:\OneDrive\Programming\C#\MVCProject\MVCProject\obj\Debug\MVCProject.csprojResolveAssemblyReference.cache
 E:\OneDrive\Programming\C#\MVCProject\MVCProject\obj\Debug\MVCProject.Migrations.Roles.resources
 E:\OneDrive\Programming\C#\MVCProject\MVCProject\obj\Debug\MVCProject.Migrations.SomeFixes.resources
+E:\OneDrive\Programming\C#\MVCProject\MVCProject\obj\Debug\MVCProject.Migrations.ConfigChange.resources
+E:\OneDrive\Programming\C#\MVCProject\MVCProject\obj\Debug\MVCProject.Migrations.ConfigChange1.resources

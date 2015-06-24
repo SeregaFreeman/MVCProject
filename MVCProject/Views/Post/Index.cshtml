@@ -65,7 +65,19 @@
         </table>
         }
 
-        @if (ViewContext.HttpContext.User.IsInRole("user"))
+        else if (ViewContext.HttpContext.User.IsInRole("moderator"))
+        {
+        <h2 style="color: gray; padding-left: 10px;">Moderator menu</h2>
+        <div class="menu">
+            <ul class="nav navbar-nav">
+                <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("Check", "Approve", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("New", "Create", "Post", new object { }, new { @style = "color: #ffb500" })</li>
+                <li onmouseover="this.className='active'" onmouseout="this.className='page-scroll'">@Html.ActionLink("Log Out", "LogOff", "Account", new object { }, new { @style = "color: #ffb500" })</li>
+            </ul>
+        </div>
+        }
+
+        else if (ViewContext.HttpContext.User.IsInRole("user"))
         {
             <div class="menu">
                 <ul class="nav navbar-nav">
@@ -91,6 +103,7 @@
 
                             <div><p style="color: #ffb500; font-size:14px">@Html.DisplayFor(modelItem => item.Title)</p></div>
                             <div><p style="color: #ffb500; font-size:14px">@Html.DisplayFor(modelItem => item.Description)</p></div>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.PostId }, new { @class = "actionLink" })
                             @Html.ActionLink("Delete", "Delete", new { id = item.PostId }, new { @class = "actionLink" })
                         </div>
                     }
