@@ -33,8 +33,8 @@ namespace MVCProject.Migrations
             roleManager.Create(role3);
 
             // создаем пользователей
-            var admin = new ApplicationUser { Email = "somemail@mail.ru", UserName = "somemail@mail.ru" };
-            string password = "ad46D_ewr3";
+            var admin = new ApplicationUser { Email = "admin@mail.com", UserName = "admin@mail.com" };
+            string password = "2wsx#EDC";
             var result = userManager.Create(admin, password);
 
             // если создание пользователя прошло успешно

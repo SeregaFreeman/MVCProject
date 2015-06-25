@@ -9,7 +9,8 @@
         <h2 style="color: gray; padding-left: 10px;">All posts</h2>
 
         @if (ViewContext.HttpContext.User.IsInRole("admin"))
-        {<table class="table">
+        {
+            <table class="table">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Title)
@@ -20,10 +21,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Author.UserName)
                 </th>
-                <th>
-                    Tags
-                </th>
-                <th></th>
             </tr>
 
             @foreach (var item in Model)
@@ -38,12 +35,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Author.UserName)
                     </td>
-                    <td>
-                        @foreach (var tag in item.Tags)
-                        {
-                            <span> @tag.TagName</span>
-                        }
-                    </td>
+                    
                     <td>
                         @if (item.File != null)
                         {

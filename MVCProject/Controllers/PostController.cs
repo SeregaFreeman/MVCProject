@@ -18,10 +18,22 @@ namespace MVCProject.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
-            List<Post> postsList = db.Posts.Where(r => r.Author.Id == currentUser.Id).Include(p => p.Author).Include(p => p.Tags).ToList();
 
-            return View(postsList);
+            if (HttpContext.User.IsInRole("user"))
+            {
+                List<Post> userPostsList = new List<Post>();
+                var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
+                userPostsList = db.Posts.Where(r => r.Author.Id == currentUser.Id).Include(p => p.Author).Include(p => p.Tags).ToList();
+                return View(userPostsList);
+            }
+            else if (HttpContext.User.IsInRole("admin"))
+            {
+                List<Post> postsList = new List<Post>();
+                postsList = db.Posts.Include(p => p.Author).ToList();
+                return View(postsList);
+            }
+            return View();
+            
         }
 
         // GET: Post/Details/5
@@ -31,11 +43,11 @@ namespace MVCProject.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
-        
-            Post post = db.Posts.Include(p=>p.Author).First(p=>p.PostId==id);
 
-          //  DetailedPostViewModel post = new DetailedPostViewModel { Title = post1.Title, AuthorName = author.UserName, Description = post1.Description, PostId = (int) id };
+
+            Post post = db.Posts.Include(p => p.Author).First(p => p.PostId == id);
+
+            //  DetailedPostViewModel post = new DetailedPostViewModel { Title = post1.Title, AuthorName = author.UserName, Description = post1.Description, PostId = (int) id };
 
             if (post == null)
             {
@@ -67,7 +79,7 @@ namespace MVCProject.Controllers
         {
             var currentUser = db.Users.First(u => u.UserName == User.Identity.Name);
             if (ModelState.IsValid)
-            {               
+            {
                 Post post = new Post();
                 post.Title = CreatePost.Title;
                 post.Description = CreatePost.Description;
@@ -86,7 +98,7 @@ namespace MVCProject.Controllers
                     picture.SaveAs(Server.MapPath("~/Uploads/" + path));
                     post.File = path;
                 }
-                
+
                 db.Posts.Add(post);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -96,21 +108,21 @@ namespace MVCProject.Controllers
         }
 
         // GET: Post/Edit/5
-        
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.Include(p=>p.Tags).First(p=>p.PostId==id);
+            Post post = db.Posts.Include(p => p.Tags).First(p => p.PostId == id);
             EditPostViewModel editPost = new EditPostViewModel { PostId = post.PostId, Title = post.Title, Description = post.Description };
             if (post == null)
             {
                 return HttpNotFound();
             }
             editPost.Tags = post.Tags;
-            editPost.AvailableTags = db.Tags.Where(x=>x.Posts.All(p=>p.PostId!=post.PostId)).ToList<Tag>();
+            editPost.AvailableTags = db.Tags.Where(x => x.Posts.All(p => p.PostId != post.PostId)).ToList<Tag>();
             return View(editPost);
         }
 
@@ -126,23 +138,23 @@ namespace MVCProject.Controllers
             EditPost.AvailableTags = db.Tags.Where(x => x.Posts.All(p => p.PostId != EditPost.PostId)).ToList<Tag>();
             if (ModelState.IsValid)
             {
-                
-                var post = db.Posts.Include(p=>p.Author).Include(p=>p.Tags).First( p => p.PostId == EditPost.PostId);
+
+                var post = db.Posts.Include(p => p.Author).Include(p => p.Tags).First(p => p.PostId == EditPost.PostId);
                 post.Title = EditPost.Title;
                 post.Description = EditPost.Description;
                 if (post.Tags == null)
                     post.Tags = new List<Tag>();
-                
+
                 if (EditPost.SelectedTagId != -1)
                     post.Tags.Add(db.Tags.First(t => t.TagId == EditPost.SelectedTagId));
-                if (EditPost.SelectedDelTagId !=-1)
+                if (EditPost.SelectedDelTagId != -1)
                     post.Tags.Remove(db.Tags.First(t => t.TagId == EditPost.SelectedDelTagId));
 
                 db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            
+
             return View(EditPost);
         }
 
@@ -151,7 +163,7 @@ namespace MVCProject.Controllers
         [Authorize(Roles = "moderator")]
         public ActionResult Approve()
         {
-            var posts = db.Posts.Include(r => r.Author).Where(r => r.Status != (int)PostStatus.Approved);
+            var posts = db.Posts.Include(r => r.Author.UserName).Where(r => r.Status != (int)PostStatus.Approved);
 
             return View(posts);
         }
@@ -172,7 +184,7 @@ namespace MVCProject.Controllers
             }
 
             post.Status = (int)PostStatus.Approved;
-            
+
             db.Entry(post).State = EntityState.Modified;
             db.SaveChanges();
 

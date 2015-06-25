@@ -1,7 +1,5 @@
-﻿@model IEnumerable<Post>
-@using MVCProject.Models;
-@{
-    
+﻿@model IEnumerable<MVCProject.Models.Post>
+@{    
     ViewBag.Title = "Posts list";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,11 +9,11 @@
         
         @foreach (var item in Model)
         {
-            if (item.Status == (int)PostStatus.Sent)
+            if (item.Status == (int)MVCProject.Models.PostStatus.Sent)
             {
             
             <div>
-                <h3>@Html.DisplayFor(modelItem => item.Author)</h3>
+                <h3>@Html.DisplayFor(modelItem => item.Author.UserName)</h3>
                 <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
             </div>
 
@@ -32,7 +30,7 @@
             {
 
                 @Html.Hidden("postId", item.PostId)
-                if (item.Status == (int)PostStatus.Sent)
+                if (item.Status == (int)MVCProject.Models.PostStatus.Sent)
                 {
                     @Html.DropDownList("status", new[]
                     {

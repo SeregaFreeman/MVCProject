@@ -102,4 +102,24 @@ namespace MVCProject.Models
         [Required]
         public string AuthorName { get; set; }
     }
+
+    public class ApprovePostViewModel
+    {
+        [Required]
+        public int PostId { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        public string Title { get; set; }
+
+        [Required]
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
+        [Display(Name = "Picture file")]
+        public string File { get; set; }
+
+        [Display(Name = "Status")]
+        public int Status { get; set; }
+    }
 }
